@@ -21,10 +21,52 @@ class InputForm extends Component {
   };
 
   render() {
-    const currentMode = "Add Task";
-    return (
+    const currentMode = this.props.editingStatus ? "Edit Task" : "Add Task";
+    const currentForm = this.props.editingStatus ? (
       <div className="container my-5">
-        <h2>{this.props.editingStatus ? "Edit Task" : currentMode}</h2>
+        <h2>{currentMode}</h2>
+        <form
+          onSubmit={event => {
+            event.preventDefault();
+            if (!this.state.title || !this.state.description) return;
+            this.props.updateTask(this.props.currentTask);
+          }}
+        >
+          <div className="form-group mt-4">
+            <label>Task Title</label>
+
+            <input
+              type="text"
+              className="form-control"
+              name="title"
+              placeholder="Enter task title"
+              onChange={event => this.props.changeDetails(event)}
+              value={this.props.currentTask.title}
+              autoComplete="off"
+            />
+          </div>
+          <div className="form-group mt-4">
+            <label>Task Description</label>
+
+            <input
+              type="text"
+              className="form-control"
+              name="description"
+              placeholder="Enter task description"
+              onChange={event => this.props.changeDetails(event)}
+              value={this.props.currentTask.description}
+              autoComplete="off"
+            />
+          </div>
+          <button className="btn btn-success">Update Task</button>
+          <button className="btn btn-info ml-3" onClick={this.props.cancelEdit}>
+            Cancel
+          </button>
+        </form>
+      </div>
+    ) : (
+      <div className="container my-5">
+        <h2>{currentMode}</h2>
         <form
           onSubmit={event => {
             event.preventDefault();
@@ -69,19 +111,25 @@ class InputForm extends Component {
         </form>
       </div>
     );
+    return <div>{currentForm}</div>;
   }
 }
 
 const mapStateToProps = state => {
   return {
     editingStatus: state.isEditing,
-    taskList: state.todoArray
+    taskList: state.todoArray,
+    currentTask: state.currentObject
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addTask: content => dispatch({ type: actionsType.ADD_TASK, task: content })
+    addTask: content => dispatch({ type: actionsType.ADD_TASK, task: content }),
+    cancelEdit: _ => dispatch({ type: actionsType.CANCEL_EDIT }),
+    updateTask: id => dispatch({ type: actionsType.UPDATE_TASK, taskId: id }),
+    changeDetails: event =>
+      dispatch({ type: actionsType.EDIT_DETAILS, eventObject: event })
   };
 };
 
