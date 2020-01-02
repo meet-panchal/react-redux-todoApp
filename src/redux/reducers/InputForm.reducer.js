@@ -50,9 +50,19 @@ const reducer = (state = initialState, action) => {
     case actionTypes.UPDATE_TASK: {
       return {
         ...state,
-        todoArray: state.todoArray.map((task, index) =>
-          task.id === action.taskId ? state.currentObject : task
+        todoArray: state.todoArray.map(task =>
+          task.id === action.updatedContent.id &&
+          action.updatedContent.title &&
+          action.updatedContent.description
+            ? state.currentObject
+            : task
         )
+      };
+    }
+    case actionTypes.DELETE_TASK: {
+      return {
+        ...state,
+        todoArray: state.todoArray.filter(task => task.id !== action.taskId)
       };
     }
 

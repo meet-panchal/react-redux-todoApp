@@ -26,10 +26,10 @@ class InputForm extends Component {
       <div className="container my-5">
         <h2>{currentMode}</h2>
         <form
-          onSubmit={event => {
+          onSubmit={async event => {
             event.preventDefault();
-            if (!this.state.title || !this.state.description) return;
-            this.props.updateTask(this.props.currentTask);
+            await this.props.updateTask(this.props.currentTask);
+            await this.props.cancelEdit();
           }}
         >
           <div className="form-group mt-4">
@@ -127,7 +127,11 @@ const mapDispatchToProps = dispatch => {
   return {
     addTask: content => dispatch({ type: actionsType.ADD_TASK, task: content }),
     cancelEdit: _ => dispatch({ type: actionsType.CANCEL_EDIT }),
-    updateTask: id => dispatch({ type: actionsType.UPDATE_TASK, taskId: id }),
+    updateTask: updatedContent =>
+      dispatch({
+        type: actionsType.UPDATE_TASK,
+        updatedContent: updatedContent
+      }),
     changeDetails: event =>
       dispatch({ type: actionsType.EDIT_DETAILS, eventObject: event })
   };
