@@ -1,0 +1,51 @@
+Redux Components Info :
+npm i redux
+
+Store : Create redux store using 
+    const redux = require("redux"); 
+    const createStore = redux.createStore;
+    Then define a const "store" ==> const store = createStore(rootReducer) :: "createStore" accepts 'Root-Reducer' as the parameter
+    'Root-Reducer' is function which manipulates the state.
+
+Reducer : Create redux reducer using
+    const rootReducer = (state = initialState, action) => {};   :: rootReducer(Any name), this function accepts two parameters
+    1. State ==> reducing state
+    2. Action ==> action is passed as a key in an object when defining "Dispatcher"
+    We can perform operations based on corresponding actions.type and return the updated state
+    * Initilize state here.
+
+Dispactcher : Create redux dispatcher using
+    store.dispatch({ type: "ACTION_TYPE" });    ::  This method dispacthes actions to the reducer. We have to pass an object where we have
+    to define 'type' (Mandatory) of action dispathing. We can pass any information along with this object.
+    This dispatches actions, which will be handled in reducers
+
+Subscription : Create redux subscription using
+    store.subscribe(() => {});      ::  This method is called everytime the state changes
+
+initialState = {
+    anyKey : anyValue
+}
+We have to initialise state and pass it to reducer's state parameter as a defualt argument (Not mandatory, but good practice)
+
+
+React-Redux Info : 
+npm i react-redux -s
+
+Provider : Create a redux provider component using
+    import { Provider } from 'react-redux'      ::  "Provider" is the react-redux component which should be wrapped around 'App.js' (Final rendered component of react) in the index file of the react project like this 
+    <Provider store={store}>
+        <App />
+    </Provider>
+    Provider component takes store as 'props', we have to pass the Redux store here. Doing this react can now use the power of redux in its components.
+
+    import store from './store'     <== this is exact same as Redux store
+
+Connect :  Create a redux connect component using
+    import { connect } from "react-redux";
+    export default connect(mapStateToProps,mapDispatchToProps)(Component)       ::  "Connect" is used to export the component. It returns a high order function which accepts "Component" as parameter and the main connect function accepts two methods :
+
+    1. const mapStateToProps = (state, ownProps) => ({// ... computed data from state and optionally ownProps})      ::  Called every time the store state changes. It receives the entire store state, and should return an object of data this component needs.
+
+    2. const mapDispatchToProps = {// ... normally is an object full of action creators}        ::  this parameter can either be a function, or an object.
+    If it’s a function, it will be called once on component creation. It will receive dispatch as an argument, and should return an object full of functions that use dispatch to dispatch actions.
+    If it’s an object full of action creators, each action creator will be turned into a prop function that automatically dispatches its action when called. Note: We recommend using this “object shorthand” form.

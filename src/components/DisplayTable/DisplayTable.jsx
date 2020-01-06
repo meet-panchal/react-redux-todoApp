@@ -40,7 +40,7 @@ const DisplayTable = props => {
           })
         ) : (
           <tr>
-            <td colSpan={4}>No Task</td>
+            <td>No Task</td>
           </tr>
         )}
       </tbody>

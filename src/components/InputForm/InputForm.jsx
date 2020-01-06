@@ -20,6 +20,13 @@ class InputForm extends Component {
     });
   };
 
+  componentWillReceiveProps() {
+    // this.setState({
+    //   title: this.props.editingStatus.title,
+    //   description: ...
+    // });
+  }
+
   render() {
     const currentMode = this.props.editingStatus ? "Edit Task" : "Add Task";
     const currentForm = this.props.editingStatus ? (
